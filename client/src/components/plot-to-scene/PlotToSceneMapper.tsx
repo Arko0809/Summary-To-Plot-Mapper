@@ -242,7 +242,7 @@ export function PlotToSceneMapper({ company = "mubi" }: { company?: keyof typeof
             style={{ color: companyTheme.bodyText }}
           >
             Submit a movie plot, pick the house style, and let the human-approval
-            agent print one short scene at a time. Accept continues the reel.
+            agent create one DOP-ready storyboard beat at a time. Accept continues the reel.
             Rewrite scraps the latest take. Finish locks the picture.
           </p>
 
@@ -424,7 +424,7 @@ export function PlotToSceneMapper({ company = "mubi" }: { company?: keyof typeof
               {session && session.status === "awaiting_approval" ? (
                 <div className="mt-6 border-2 border-dashed border-amber-500/70 bg-[#2a160f] p-4">
                   <p className="text-[10px] uppercase tracking-[0.3em] text-amber-300">
-                    Latest take · Scene {session.sceneNumber}
+                    Latest storyboard · Scene {session.sceneNumber}
                   </p>
                   <p className="mt-3 whitespace-pre-wrap font-[family-name:var(--font-cinema-body)] text-base leading-7 text-red-500">
                     {loading ? "The projector is still spinning…" : session.currentScene}

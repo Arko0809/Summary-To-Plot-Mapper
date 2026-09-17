@@ -46,38 +46,37 @@ type GraphStateType = typeof GraphState.State;
 /**
  * Normalizes model output into plain text so scene generation works even when the model returns arrays or structured content.
  */
-function sceneTextFromModel(content: unknown) {
-  if (typeof content === "string") return content;
+function sceneTextFromModel(content: unknown): string {
+  if (typeof content === "string") return content.trim();
   if (Array.isArray(content)) {
     return content
-      .map((part) => {
-        if (typeof part === "string") return part;
-        if (part && typeof part === "object" && "text" in part) {
-          return String((part as { text?: unknown }).text ?? "");
-        }
-        return "";
-      })
-      .join("");
+      .map(sceneTextFromModel)
+      .filter(Boolean)
+      .join("\n");
   }
-  return String(content ?? "");
+  if (content && typeof content === "object") {
+    const block = content as { text?: unknown; content?: unknown; value?: unknown };
+    return sceneTextFromModel(block.text ?? block.content ?? block.value ?? "");
+  }
+  return "";
 }
 
 /**
- * Keeps the scene output concise by trimming it to the short, cinematic format expected by the UI.
+ * Keeps the storyboard to the five practical production beats required by the UI.
  */
-function clampToThreeLines(text: string) {
+function clampToStoryboardLines(text: string) {
   const lines = text
     .replace(/\r/g, "")
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean)
-    .slice(0, 3);
+    .slice(0, 6);
 
   return lines.join("\n");
 }
 
 /**
- * Generates the next short scene using the selected style and the evolving story context.
+ * Generates the next DOP-ready storyboard beat using the selected style and evolving story context.
  */
 async function writeScene(state: GraphStateType) {
   PlotSubmitSchema.parse({
@@ -86,7 +85,7 @@ async function writeScene(state: GraphStateType) {
     dialogueSetting: state.dialogueSetting,
   });
 
-  const model = getChatModel({ temperature: 0.85, maxTokens: 220 });
+  const model = getChatModel({ temperature: 0.7, maxTokens: 420 });
   const rewriteBlock = state.rewriteHint
     ? [
         "REWRITE the current scene. Do not reuse the previous draft.",
@@ -104,10 +103,11 @@ async function writeScene(state: GraphStateType) {
   const response = await model.invoke([
     new SystemMessage(
       [
-        "You are a classic studio continuity writer for a retro cinema plot-to-scene mapper.",
-        "Return only the scene text. No title, no numbering, no markdown.",
-        "Hard limit: at most 2-3 short lines / 2-3 sentences.",
-        "You may mix a brief visual description with spoken dialogue.",
+        "You are a director of photography creating a shootable cinema storyboard, not a fiction writer.",
+        "Return 5-6 concise newline-separated production directions. No title, intro, prose paragraph, or markdown.",
+        "Use these five labels in order: SHOT:, CAMERA:, BLOCKING:, LIGHTING:, SOUND/TRANSITION:. You may add a sixth NOTES: line only if it gives an essential production detail.",
+        "SHOT must name the framing and subject; CAMERA must state position, lens feeling, and movement; BLOCKING must say what actors do and where; LIGHTING must describe the motivated source, contrast, and palette; SOUND/TRANSITION must state sound/dialogue treatment and the cut or transition.",
+        "Describe only what a DOP, camera operator, gaffer, and editor need to execute the next beat. Do not narrate internal feelings or write a story.",
         "Match the requested scene setting and dialogue setting exactly.",
       ].join("\n"),
     ),
@@ -123,10 +123,15 @@ async function writeScene(state: GraphStateType) {
     ),
   ]);
 
-  const raw = sceneTextFromModel(response.content);
+  // AIMessage.text is LangChain's provider-neutral text accessor. Content is retained as a fallback for older providers.
+  const raw = response.text.trim() || sceneTextFromModel(response.content);
+  const storyboard = clampToStoryboardLines(raw);
+  if (!storyboard) {
+    throw new Error("The configured AI model returned an empty storyboard. Check the model name and API key, then retry.");
+  }
 
   const scene = SceneDraftSchema.parse({
-    scene: clampToThreeLines(raw),
+    scene: storyboard,
   }).scene;
 
   return {

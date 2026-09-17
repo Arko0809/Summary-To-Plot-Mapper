@@ -16,7 +16,7 @@ export const PlotSubmitSchema = z.object({
     .string()
     .trim()
     .min(20, "Give a fuller plot or summary (at least 20 characters)")
-    .max(8000, "Plot is too long"),
+    .max(100_000, "Plot is too long (maximum 100,000 characters)"),
   sceneSetting: SceneSettingSchema,
   dialogueSetting: DialogueSettingSchema,
 });

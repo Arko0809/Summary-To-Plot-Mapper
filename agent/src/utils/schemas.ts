@@ -59,7 +59,7 @@ export const PlotSubmitSchema = z.object({
     .string()
     .trim()
     .min(20, "Give a fuller plot or summary (at least 20 characters)")
-    .max(8000, "Plot is too long"),
+    .max(100_000, "Plot is too long (maximum 100,000 characters)"),
   sceneSetting: SceneSettingSchema,
   dialogueSetting: DialogueSettingSchema,
 });
@@ -78,7 +78,7 @@ export const SceneDraftSchema = z.object({
     .string()
     .trim()
     .min(1, "Scene text is required")
-    .max(900, "Scene must stay within 2-3 short lines"),
+    .max(2_100, "Storyboard must stay within 5-6 production lines"),
 });
 
 export const SceneSessionSchema = z.object({
