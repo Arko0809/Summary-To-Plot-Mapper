@@ -5,15 +5,38 @@ import { searchRouter } from "./routes/search_lcel";
 import { plotToSceneRouter } from "./routes/plot_to_scene";
 
 const app = express();
+const normalizeOrigin = (value: string) => value.trim().replace(/\/+$/, "");
 const allowedOrigins = (process.env.ALLOWED_ORIGIN ?? "http://localhost:3000")
   .split(",")
-  .map((origin) => origin.trim())
+  .map((origin) => normalizeOrigin(origin))
   .filter(Boolean);
+
+const isAllowedOrigin = (origin: string) => {
+  const normalizedOrigin = normalizeOrigin(origin);
+
+  return allowedOrigins.some((allowedOrigin) => {
+    if (allowedOrigin === "*") return true;
+
+    if (allowedOrigin.includes("*")) {
+      const escaped = allowedOrigin
+        .replace(/[.+?^${}()|[\]\\]/g, "\\$&")
+        .replace(/\\\*/g, ".*");
+      return new RegExp(`^${escaped}$`).test(normalizedOrigin);
+    }
+
+    return allowedOrigin === normalizedOrigin;
+  });
+};
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
         return;
       }
@@ -21,8 +44,12 @@ app.use(
       callback(new Error(`Origin not allowed: ${origin}`));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+app.options("*", cors());
 
 app.use(express.json());
 
