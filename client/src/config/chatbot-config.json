@@ -1,0 +1,136 @@
+{
+  "netflix": {
+    "company": {
+      "name": "Netflix",
+      "logo": "/company-logos/netflix.png",
+      "shortName": "NFLX"
+    },
+    "widget": {
+      "position": "bottom-right",
+      "design": "floating",
+      "size": "medium",
+      "panelRadius": "28px",
+      "launcherRadius": "20px",
+      "headerStyle": "cinema-glass",
+      "badgeStyle": "live",
+      "borderStyle": "strong",
+      "shadow": "0 30px 80px rgba(0,0,0,.16), 0 10px 30px rgba(229,9,20,0.28)"
+    },
+    "page": {
+      "background": "linear-gradient(180deg, #0b0604 0%, #130904 18%, #181012 48%, #070606 100%)",
+      "headerBackground": "linear-gradient(135deg, rgba(61,5,10,0.92) 0%, rgba(18,10,12,0.95) 100%)",
+      "headerBorder": "rgba(251,191,36,0.7)",
+      "headerShadow": "inset 0 0 40px rgba(0,0,0,0.45)",
+      "pattern": "grain",
+      "surface": "#140904",
+      "surfaceGradient": "radial-gradient(circle at top, rgba(127,29,29,0.55), transparent 45%)",
+      "eyebrowColor": "#fcd34d",
+      "titleColor": "#fef3c7",
+      "bodyColor": "rgba(254,243,199,0.78)"
+    },
+    "theme": {
+      "primary": "#E50914",
+      "primaryDark": "#B20710",
+      "primaryLight": "#FDF2F2",
+      "brandGradient": "linear-gradient(135deg, #E50914 0%, #9B060E 50%, #000000 100%)",
+      "accentGradient": "linear-gradient(90deg, #E50914 0%, #FF3E46 50%, #B20710 100%)",
+      "panelBackground": "#141414",
+      "headerBackground": "#000000",
+      "headingText": "#FFFFFF",
+      "bodyText": "#F53E1B",
+      "mutedText": "#808080",
+      "border": "#2F2F2F",
+      "userBubble": "linear-gradient(135deg, #E50914, #B20710)",
+      "assistantBubble": "#1F1F1F",
+      "inputBackground": "#2F2F2F",
+      "launcher": "linear-gradient(135deg, #E50914 0%, #B20710 50%, #000000 100%)",
+      "launcherGlow": "#E50914",
+      "success": "#22C55E",
+      "confidence": "linear-gradient(90deg, #E50914, #B20710, #000000)",
+      "decorativeOne": "#E50914",
+      "decorativeTwo": "#000000",
+      "surfaceAccent": "rgba(229,9,20,0.12)",
+      "panelBorder": "rgba(251,191,36,0.75)",
+      "chipBackground": "rgba(253,242,242,0.9)"
+    },
+    "content": {
+      "status": "Online & ready to stream",
+      "welcomeTitle": "What are you looking to watch?",
+      "welcomeDescription": "Discover movies, TV shows, and personalized recommendations powered by Netflix.",
+      "inputPlaceholder": "Ask Netflix for recommendations...",
+      "footerLeft": "Powered by Netflix",
+      "footerRight": "Entertainment Assistant",
+      "suggestions": [
+        "Recommend a sci-fi thriller",
+        "What's trending today?"
+      ]
+    }
+  },
+  "mubi": {
+    "company": {
+      "name": "MUBI",
+      "logo": "/company-logos/mubi.png",
+      "shortName": "MUBI"
+    },
+    "widget": {
+      "position": "bottom-left",
+      "design": "floating",
+      "size": "medium",
+      "panelRadius": "24px",
+      "launcherRadius": "18px",
+      "headerStyle": "editorial",
+      "badgeStyle": "curated",
+      "borderStyle": "soft",
+      "shadow": "0 18px 60px rgba(0, 36, 162, 0.18), 0 10px 24px rgba(0, 19, 87, 0.12)"
+    },
+    "page": {
+      "background": "linear-gradient(180deg, #f5f3ee 0%, #eef2ff 22%, #dfe7ff 52%, #f7f7f5 100%)",
+      "headerBackground": "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(232,237,255,0.95) 100%)",
+      "headerBorder": "rgba(0,36,162,0.14)",
+      "headerShadow": "inset 0 0 24px rgba(0,0,0,0.04)",
+      "pattern": "editorial-grid",
+      "surface": "#f7f7f5",
+      "surfaceGradient": "radial-gradient(circle at top, rgba(20, 45, 119, 0.12), transparent 42%)",
+      "eyebrowColor": "#1f3aa8",
+      "titleColor": "#111827",
+      "bodyColor": "rgba(17,24,39,0.72)"
+    },
+    "theme": {
+      "primary": "#0024A2",
+      "primaryDark": "#001357",
+      "primaryLight": "#E6E9F6",
+      "brandGradient": "linear-gradient(135deg, #0024A2 0%, #001C7F 50%, #000000 100%)",
+      "accentGradient": "linear-gradient(90deg, #0024A2 0%, #3355CC 50%, #001357 100%)",
+      "panelBackground": "#FAFAFA",
+      "headerBackground": "#FFFFFF",
+      "headingText": "#000000",
+      "bodyText": "#1E1E1E",
+      "mutedText": "#757575",
+      "border": "#E5E5E5",
+      "userBubble": "linear-gradient(135deg, #0024A2, #001357)",
+      "assistantBubble": "#FFFFFF",
+      "inputBackground": "#FAFAFA",
+      "launcher": "linear-gradient(135deg, #0024A2 0%, #001C7F 60%, #000000 100%)",
+      "launcherGlow": "#0024A2",
+      "success": "#10B981",
+      "confidence": "linear-gradient(90deg, #0024A2, #001C7F, #000000)",
+      "decorativeOne": "#0024A2",
+      "decorativeTwo": "#000000",
+      "surfaceAccent": "rgba(0,36,162,0.06)",
+      "panelBorder": "rgba(0,36,162,0.16)",
+      "chipBackground": "rgba(230,233,246,0.9)"
+    },
+    "content": {
+      "status": "Online & curated for you",
+      "welcomeTitle": "Discover hand-picked cinema",
+      "welcomeDescription": "Explore cult classics, indie gems, and global cinema powered by MUBI.",
+      "inputPlaceholder": "Ask MUBI about filmmakers or genres...",
+      "footerLeft": "Powered by MUBI",
+      "footerRight": "Cinema Curator",
+      "suggestions": [
+        "Show me today's Film of the Day",
+        "Find highly rated indie dramas"
+      ]
+    }
+  }
+}

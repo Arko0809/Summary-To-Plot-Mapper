@@ -1,0 +1,17 @@
+# Root-level repo ignores
+node_modules/
+.env
+.env.*
+.DS_Store
+npm-debug.log*
+
+# Build outputs
+client/.next/
+client/out/
+client/build/
+agent/dist/
+agent/.next/
+
+# OS/editor files
+.vscode/
+*.log

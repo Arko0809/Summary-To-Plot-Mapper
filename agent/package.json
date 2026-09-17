@@ -1,0 +1,42 @@
+{
+  "name": "agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc --project tsconfig.json --noEmit",
+    "start": "tsx src/index.ts"
+  },
+  "keywords": [],
+  "author": "arko",
+  "license": "ISC",
+  "engines": {
+    "node": ">=22.3.0 <23"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/html-to-text": "^9.0.4",
+    "@types/node": "^24.9.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@langchain/classic": "^1.0.1",
+    "@langchain/core": "^1.0.2",
+    "@langchain/google-genai": "^1.0.0",
+    "@langchain/groq": "^1.0.0",
+    "@langchain/langgraph": "^1.4.15",
+    "@langchain/openai": "^1.0.0",
+    "@napi-rs/canvas": "^1.0.9",
+    "@types/express": "^4.17.25",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "html-to-text": "^9.0.5",
+    "mongodb": "^7.6.0",
+    "pdf-parse": "^2.4.5",
+    "zod": "^4.1.12"
+  }
+}
