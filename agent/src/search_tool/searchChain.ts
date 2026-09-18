@@ -8,6 +8,7 @@ import { routerStep } from "./routeStrategy";
 import { finalValidateAndPolish } from "./finalValidate";
 import { SearchInput } from "../utils/schemas";
 import { runKnowledgeBaseSearch } from "../knowledgeBase/service";
+import { env } from "../shared/env";
 
 // web -> webPath
 // directPath
@@ -36,9 +37,12 @@ export const searchChain = RunnableSequence.from([
  * Entry point for any search request: it uses the company KB when enabled, otherwise it uses the LCEL search chain.
  */
 export async function runSearch(input: SearchInput) {
+  const provider = input.modelProvider ?? (env.MODEL_PROVIDER === "openai" ? "gemini" : env.MODEL_PROVIDER);
+  const queryInput = { ...input, modelProvider: provider as "gemini" | "groq" };
+
   if (input.useKnowledgeBase) {
-    return runKnowledgeBaseSearch(input);
+    return runKnowledgeBaseSearch(queryInput);
   }
 
-  return await searchChain.invoke(input);
+  return await searchChain.invoke(queryInput);
 }

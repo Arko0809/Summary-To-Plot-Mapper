@@ -21,7 +21,7 @@ const setTopResults = 5;
  * Calls the external web search provider to gather the top candidate pages for a question.
  */
 export const webSearchStep = RunnableLambda.from(
-  async (input: { q: string; mode: "web" | "direct" }) => {
+  async (input: { q: string; mode: "web" | "direct"; modelProvider?: "gemini" | "groq" }) => {
     const results = await webSearch(input.q); // tavily
 
     return {
@@ -35,7 +35,7 @@ export const webSearchStep = RunnableLambda.from(
  * Opens the top search results, strips the noise, and summarizes each page into a compact source snippet.
  */
 export const openAndSummarizeStep = RunnableLambda.from(
-  async (input: { q: string; mode: "web" | "direct"; results: any[] }) => {
+  async (input: { q: string; mode: "web" | "direct"; modelProvider?: "gemini" | "groq"; results: any[] }) => {
     if (!Array.isArray(input.results) || input.results.length === 0) {
       return {
         ...input,
@@ -100,9 +100,13 @@ export const ComposeStep = RunnableLambda.from(
     q: string;
     pageSummaries: Array<{ url: string; summary: string }>;
     mode: "web" | "direct";
+    modelProvider?: "gemini" | "groq";
     fallback: "no-results" | "snippets" | "none";
   }): Promise<candidate> => {
-    const model = getChatModel({ temperature: 0.2 });
+    const model = getChatModel({
+      temperature: 0.2,
+      provider: input.modelProvider ?? "gemini",
+    });
 
     if (!input.pageSummaries || input.pageSummaries.length === 0) {
       const directResponseFromModel = await model.invoke([

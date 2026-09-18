@@ -169,8 +169,8 @@ export function routeStrategy(q: string): "web" | "direct" {
  * LCEL step that validates input and adds the chosen routing mode before the pipeline branches.
  */
 export const routerStep = RunnableLambda.from(
-  async (input: { q: string; companyName: string }) => {
-    const { q } = SearchInputSchema.parse(input);
+  async (input: { q: string; companyName: string; modelProvider?: "gemini" | "groq" }) => {
+    const { q, modelProvider } = SearchInputSchema.parse(input);
 
     // decide the mode -> web, direct
     const mode = routeStrategy(q);
@@ -179,6 +179,7 @@ export const routerStep = RunnableLambda.from(
       q,
       companyName: input.companyName,
       mode,
+      modelProvider: modelProvider ?? input.modelProvider,
     };
   },
 );

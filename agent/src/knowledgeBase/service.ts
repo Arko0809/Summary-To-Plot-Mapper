@@ -165,7 +165,10 @@ export async function runKnowledgeBaseSearch(input: SearchInput): Promise<Search
   }
 
   const context = chunks.map((chunk, index) => `[${index + 1}] ${chunk.content}`).join("\n\n");
-  const response = await getChatModel({ temperature: 0.1 }).invoke([
+  const response = await getChatModel({
+    temperature: 0.1,
+    provider: input.modelProvider ?? "gemini",
+  }).invoke([
     new SystemMessage("Answer only from the supplied company policy excerpts. If the answer is not in them, say so. Do not use outside knowledge. Cite excerpt numbers like [1] in the answer when possible."),
     new HumanMessage(`Question: ${question}\n\nPolicy excerpts:\n${context}`),
   ]);

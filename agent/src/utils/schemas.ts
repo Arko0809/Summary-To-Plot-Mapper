@@ -30,10 +30,13 @@ export const SummarizeOutputSchema = z.object({
   summary: z.string().min(1),
 });
 
+export const ModelProviderSchema = z.enum(["gemini", "groq"]).optional();
+
 export const SearchInputSchema = z.object({
   q: z.string().min(5, "Please ask a specific query"),
   companyName: z.string().trim().min(1, "companyName is required").max(120),
   useKnowledgeBase: z.boolean().default(false),
+  modelProvider: ModelProviderSchema,
 });
 
 export type SearchInput = z.infer<typeof SearchInputSchema>;

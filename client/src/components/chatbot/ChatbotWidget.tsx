@@ -15,6 +15,8 @@ import chatbotConfig from "@/config/chatbot-config.json";
 
 type CompanyKey = keyof typeof chatbotConfig;
 
+type ModelProvider = "gemini" | "groq";
+
 type SearchResponse = {
   answer: string;
   sources: string[];
@@ -143,6 +145,7 @@ export function ChatbotWidget({
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [loading, setLoading] = useState(false);
   const [knowledgeBaseMode, setKnowledgeBaseMode] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<ModelProvider>("gemini");
 
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -221,6 +224,7 @@ export function ChatbotWidget({
           q: cleanQuery,
           companyName: config.company.name,
           useKnowledgeBase: knowledgeBaseMode,
+          modelProvider: selectedModel,
         }),
       });
 
@@ -695,6 +699,20 @@ export function ChatbotWidget({
                 }
                 className="min-w-0 flex-1 border-0 bg-transparent text-[13px] text-gray-900 outline-none placeholder:text-gray-400"
               />
+
+              <select
+                value={selectedModel}
+                onChange={(event) => setSelectedModel(event.target.value as ModelProvider)}
+                aria-label="Choose model"
+                className="h-[34px] shrink-0 rounded-[10px] border bg-white px-2 text-[10px] font-extrabold outline-none"
+                style={{
+                  borderColor: theme.border,
+                  color: theme.primaryDark,
+                }}
+              >
+                <option value="gemini">Gemini</option>
+                <option value="groq">Groq</option>
+              </select>
 
               <button
                 type="button"

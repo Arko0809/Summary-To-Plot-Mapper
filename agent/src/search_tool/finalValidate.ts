@@ -11,7 +11,7 @@ import { HumanMessage, SystemMessage } from "@langchain/core/messages";
  * Validates the search result against the UI contract and repairs malformed output with a focused follow-up model call.
  */
 export const finalValidateAndPolish = RunnableLambda.from(
-  async (candidate: candidate) => {
+  async (candidate: candidate & { modelProvider?: "gemini" | "groq" }) => {
     const finalDraft = {
       answer: candidate.answer,
       sources: candidate.sources ?? [],
@@ -21,7 +21,7 @@ export const finalValidateAndPolish = RunnableLambda.from(
     if (parsed1.success) return parsed1.data;
 
     // one shot repair (extra check)
-    const repaired = await repairSearchAns(finalDraft);
+    const repaired = await repairSearchAns(finalDraft, candidate.modelProvider);
     const parsed2 = SearchAnswerSchema.safeParse(repaired);
     if (parsed2.success) return parsed2.data;
   }
@@ -31,9 +31,13 @@ export const finalValidateAndPolish = RunnableLambda.from(
  * Repairs an invalid answer object by asking the model to return data that matches the expected schema exactly.
  */
 async function repairSearchAns(
-  obj: any
+  obj: any,
+  modelProvider?: "gemini" | "groq"
 ): Promise<{ answer: string; sources: string[] }> {
-  const model = getChatModel({ temperature: 0.2 });
+  const model = getChatModel({
+    temperature: 0.2,
+    provider: modelProvider ?? "gemini",
+  });
 
   const response = await model.invoke([
     new SystemMessage(

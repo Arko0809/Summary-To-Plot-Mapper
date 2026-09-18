@@ -87,6 +87,26 @@ export function PlotToSceneMapper({ company = "mubi" }: { company?: keyof typeof
     setLoading(false);
   }
 
+  function downloadStoryboardText() {
+    if (!session || !session.acceptedScenes.length) return;
+
+    const textContent = [
+      `Plot brief:\n${plot.trim() || "No brief provided."}`,
+      "",
+      ...session.acceptedScenes.map((scene, index) => `Scene ${index + 1}\n${scene}`),
+    ].join("\n\n");
+
+    const blob = new Blob([textContent], { type: "text/plain;charset=utf-8" });
+    const objectUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = objectUrl;
+    anchor.download = "storyboard.txt";
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    URL.revokeObjectURL(objectUrl);
+  }
+
 /**
  * Parses the backend JSON response and enforces the scene-session schema before updating the React state.
  */
@@ -459,9 +479,18 @@ export function PlotToSceneMapper({ company = "mubi" }: { company?: keyof typeof
               ) : null}
 
               {session?.status === "finished" ? (
-                <p className="mt-6 border border-amber-600 px-4 py-3 font-[family-name:var(--font-cinema-body)] text-sm text-red-500">
-                  The reel is complete. Hit Clear to start a new picture.
-                </p>
+                <div className="mt-6 space-y-3">
+                  <p className="border border-amber-600 px-4 py-3 font-[family-name:var(--font-cinema-body)] text-sm text-red-500">
+                    The reel is complete. Hit Clear to start a new picture.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={downloadStoryboardText}
+                    className="w-full border-2 border-amber-300 bg-[#39170c] px-4 py-3 font-[family-name:var(--font-cinema-display)] text-lg text-amber-50 transition hover:translate-x-[1px] hover:translate-y-[1px]"
+                  >
+                    Download storyboard (.txt)
+                  </button>
+                </div>
               ) : null}
             </div>
           </div>
